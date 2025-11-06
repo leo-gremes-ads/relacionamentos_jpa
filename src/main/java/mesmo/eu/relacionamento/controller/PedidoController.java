@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mesmo.eu.relacionamento.dto.PedidoDto;
-import mesmo.eu.relacionamento.entity.Pedido;
 import mesmo.eu.relacionamento.service.PedidoService;
 
 @RestController
@@ -22,14 +21,14 @@ public class PedidoController
     private PedidoService pedidoService;
 
     @PostMapping
-    public ResponseEntity<Pedido> novoPedido(@RequestBody PedidoDto dto)
+    public ResponseEntity<PedidoDto> novoPedido(@RequestBody PedidoDto dto)
     {
-        Pedido p = pedidoService.salvar(dto);
-        return ResponseEntity.ok(p);        
+        PedidoDto pedido = pedidoService.salvar(dto);
+        return ResponseEntity.ok(pedido);        
     }
 
     @GetMapping
-    public List<Pedido> listarTodos()
+    public List<PedidoDto> listarTodos()
     {
         return pedidoService.procurarTodos();
     }
