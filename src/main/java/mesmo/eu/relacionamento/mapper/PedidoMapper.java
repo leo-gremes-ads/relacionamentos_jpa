@@ -19,9 +19,11 @@ public interface PedidoMapper
     Pedido toEntity(PedidoDto dto);
 
     @Mapping(target="seq", source="id.seq")
+    @Mapping(target="produtoId", source="produto.id")
     ItemDto toDto(Item item);
 
     @Mapping(target="id.seq", source="seq")
     @Mapping(target="pedido", ignore=true)
+    @Mapping(target="produto", ignore=true)
     Item toEntity(ItemDto dto);
 }

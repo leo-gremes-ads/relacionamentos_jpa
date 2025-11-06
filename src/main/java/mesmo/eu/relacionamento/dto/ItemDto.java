@@ -3,7 +3,7 @@ package mesmo.eu.relacionamento.dto;
 public record ItemDto
 (
     Integer seq,
-    String nome,
+    Long produtoId,
     Integer qtd
 )
 {}

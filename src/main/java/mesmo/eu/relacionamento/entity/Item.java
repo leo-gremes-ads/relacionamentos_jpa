@@ -28,6 +28,9 @@ public class Item
     @JoinColumn(name="pedido_id")
     private Pedido pedido;
 
-    private String nome;
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="produto_id")
+    private Produto produto;
+    
     private Integer qtd;
 }

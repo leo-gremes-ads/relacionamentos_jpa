@@ -11,6 +11,7 @@ import mesmo.eu.relacionamento.dto.PedidoDto;
 import mesmo.eu.relacionamento.entity.Item;
 import mesmo.eu.relacionamento.entity.ItemId;
 import mesmo.eu.relacionamento.entity.Pedido;
+import mesmo.eu.relacionamento.entity.Produto;
 import mesmo.eu.relacionamento.mapper.PedidoMapper;
 import mesmo.eu.relacionamento.repository.PedidoRepository;
 
@@ -23,6 +24,9 @@ public class PedidoService
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    private ProdutoService produtoService;
+
     @Transactional
     public PedidoDto salvar(PedidoDto dto)
     {
@@ -30,7 +34,13 @@ public class PedidoService
         pedido.setCliente(dto.cliente());
         pedido = pedidoRepository.save(pedido);
         List<Item> itens = dto.itens().stream()
-            .map(d -> pedidoMapper.toEntity(d))
+            .map(d -> {
+                Item item = pedidoMapper.toEntity(d);
+                pedidoMapper.toEntity(d);
+                Produto produto = produtoService.procurarPorId(d.produtoId());
+                item.setProduto(produto);
+                return item;
+            })
             .collect(Collectors.toList());
         int contador = 1;
         for (Item item : itens) {
