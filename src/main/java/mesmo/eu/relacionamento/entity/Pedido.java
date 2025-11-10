@@ -1,5 +1,6 @@
 package mesmo.eu.relacionamento.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class Pedido
 
     private String cliente;
 
+    private LocalDate data;
+
     @OneToMany(mappedBy="pedido", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Item> itens = new ArrayList<>();
 
@@ -38,9 +41,9 @@ public class Pedido
     {
         if (itens == null)
             itens = new ArrayList<>();
-            item.setPedido(this);
-            item.getId().setPedidoId(this.id);
-            item.getId().setSeq(itens.size() + 1);
-            itens.add(item);
+        item.setPedido(this);
+        item.getId().setPedidoId(this.id);
+        item.getId().setSeq(itens.size() + 1);
+        itens.add(item);
     }
 }
