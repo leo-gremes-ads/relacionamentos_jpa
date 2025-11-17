@@ -36,4 +36,10 @@ public class ProdutoService
     {
         return produtoRepository.findById(id).orElse(null);
     }
+
+    @Transactional
+    public void deletarPorId(Long id)
+    {
+        produtoRepository.deleteById(id);
+    }
 }
