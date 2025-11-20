@@ -15,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(of="id")
 public class Ingrediente
 {
     @Id
@@ -24,5 +24,5 @@ public class Ingrediente
 
     private String nome;
     private String unDeMedida;
-    private String fornecedor;    
+    private String fornecedor;
 }

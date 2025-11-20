@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import mesmo.eu.relacionamento.dto.pedido.PedidoDto;
 import mesmo.eu.relacionamento.dto.pedido.PedidoSaida;
@@ -17,6 +18,7 @@ import mesmo.eu.relacionamento.entity.Pedido;
 import mesmo.eu.relacionamento.entity.Produto;
 import mesmo.eu.relacionamento.mapper.PedidoMapper;
 import mesmo.eu.relacionamento.repository.PedidoRepository;
+import mesmo.eu.relacionamento.repository.ProdutoRepository;
 
 @Service
 public class PedidoService
@@ -28,7 +30,7 @@ public class PedidoService
     private PedidoRepository pedidoRepository;
 
     @Autowired
-    private ProdutoService produtoService;
+    private ProdutoRepository produtoRepository;
 
     @Transactional
     public PedidoDto salvar(PedidoDto dto)
@@ -40,7 +42,9 @@ public class PedidoService
         List<Item> itens = dto.itens().stream()
             .map(d -> {
                 Item item = pedidoMapper.toEntity(d);
-                Produto produto = produtoService.procurarPorId(d.produtoId());
+                Produto produto = produtoRepository.findById(d.produtoId())
+                    .orElse(null);
+                if (produto == null) throw new EntityNotFoundException("Produto inexistente");
                 item.setProduto(produto);
                 return item;
             })
@@ -61,7 +65,7 @@ public class PedidoService
         List<Pedido> lista = pedidoRepository.findAll();
         Function<Pedido, PedidoSaida> mapper = p -> {
             Integer qtdItens = p.getItens().size();
-            Double valorTotal = p.getItens().stream().map(it -> it.getQtd() * it.getProduto().getPrecoProduto()).reduce(Double::sum).orElse(0.0);
+            Double valorTotal = p.getItens().stream().map(it -> it.getQtd() * it.getProduto().getPreco()).reduce(Double::sum).orElse(0.0);
             PedidoSaida saida = new PedidoSaida(p.getId(), p.getData(), p.getCliente(), qtdItens, valorTotal);
             return saida;    
         };

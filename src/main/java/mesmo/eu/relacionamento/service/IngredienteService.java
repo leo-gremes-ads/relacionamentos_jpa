@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import mesmo.eu.relacionamento.dto.IngredienteDto;
 import mesmo.eu.relacionamento.entity.Ingrediente;
@@ -38,5 +39,34 @@ public class IngredienteService
     {
         Ingrediente ingrediente = ingredienteRepository.findById(id).orElse(null);
         return (ingrediente == null) ? null : ingredienteMapper.toDto(ingrediente);
+    }
+
+    @Transactional
+    public void apagarPorId(Long id)
+    {
+        ingredienteRepository.deleteById(id);
+    }
+
+    @Transactional
+    public IngredienteDto atualizar(Long id, IngredienteDto dto)
+    {
+        Ingrediente existente = ingredienteRepository.findById(id).orElse(null);
+        if (existente == null)
+            throw new EntityNotFoundException("Ingrediente com id " + id + " inexistente");
+        Ingrediente novo = ingredienteMapper.toEntity(dto);
+        novo.setId(id);
+        novo = ingredienteRepository.save(novo);
+        return ingredienteMapper.toDto(novo);        
+    }
+
+    @Transactional
+    public IngredienteDto atualizarParcial(Long id, IngredienteDto dto)
+    {
+        Ingrediente existente = ingredienteRepository.findById(id).orElse(null);
+        if (existente == null)
+            throw new EntityNotFoundException("Ingrediente com id " + id + " inexistente");
+        ingredienteMapper.updateFromDto(dto, existente);
+        existente = ingredienteRepository.save(existente);
+        return ingredienteMapper.toDto(existente);
     }
 }
