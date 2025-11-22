@@ -6,7 +6,7 @@ public record PedidoSaida
 (
     Long id,
     LocalDate data,
-    String cliente,
+    Integer numeroMesa,
     Integer qtdItens,
     Double valorTotal
 ) {}

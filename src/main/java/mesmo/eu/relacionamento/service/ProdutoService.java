@@ -1,5 +1,6 @@
 package mesmo.eu.relacionamento.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,6 +96,21 @@ public class ProdutoService
         Produto existente = produtoRepository.findById(id).orElse(null);
         if (existente == null) throw new EntityNotFoundException("Produto inexistente");
         produtoMapper.updateFromDto(dto, existente);
+        if (dto.ingredientes() != null) {
+            List<IngredienteProduto> novaLista = new ArrayList<>();
+            for (IngredienteProdutoDto ipDto : dto.ingredientes()) {
+                IngredienteProduto ip = new IngredienteProduto();
+                Ingrediente ingrediente = ingredienteRepository.findById(ipDto.ingredienteId())
+                    .orElseThrow(() -> new EntityNotFoundException("Ingrediente inexistete"));
+                ip.setId(new IngredienteProdutoId(existente.getId(), ingrediente.getId()));
+                ip.setIngrediente(ingrediente);
+                ip.setProduto(existente);
+                ip.setQtd(ipDto.qtd());
+                novaLista.add(ip);
+            }
+            existente.getIngredientes().clear();
+            existente.getIngredientes().addAll(novaLista);
+        }
         existente = produtoRepository.save(existente);
         return produtoMapper.toDto(existente);
     }

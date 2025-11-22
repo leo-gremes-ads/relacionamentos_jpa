@@ -30,7 +30,7 @@ public class Pedido
     @Column(name="pedido_id")
     private Long id;
 
-    private String cliente;
+    private Integer numeroMesa;
 
     private LocalDate data;
 
