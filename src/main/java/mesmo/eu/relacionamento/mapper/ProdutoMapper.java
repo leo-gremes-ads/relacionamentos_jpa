@@ -8,6 +8,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import mesmo.eu.relacionamento.dto.IngredienteProdutoDto;
 import mesmo.eu.relacionamento.dto.ProdutoDto;
+import mesmo.eu.relacionamento.dto.ProdutoDtoSemItens;
 import mesmo.eu.relacionamento.entity.IngredienteProduto;
 import mesmo.eu.relacionamento.entity.Produto;
 
@@ -15,12 +16,16 @@ import mesmo.eu.relacionamento.entity.Produto;
 public interface ProdutoMapper
 {
     ProdutoDto toDto(Produto produto);
+
+    ProdutoDtoSemItens toDtoSemItens(Produto produto);
     
     @Mapping(target="ingredientes", ignore=true)
     @Mapping(target="id", ignore=true)
     Produto toEntity(ProdutoDto dto);
 
     @Mapping(target="ingredienteId", source="ingrediente.id")
+    @Mapping(target="nome", source="ingrediente.nome")
+    @Mapping(target="unDeMedida", source="ingrediente.unDeMedida")
     IngredienteProdutoDto toDto(IngredienteProduto ingredienteProduto);
 
     @Mapping(target="id", ignore=true)

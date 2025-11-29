@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import mesmo.eu.relacionamento.dto.ProdutoDto;
+import mesmo.eu.relacionamento.dto.ProdutoDtoSemItens;
 import mesmo.eu.relacionamento.dto.relatorios.Exclusoes;
 import mesmo.eu.relacionamento.dto.relatorios.ReceitaPorCategoria;
 import mesmo.eu.relacionamento.dto.relatorios.UsoIngredientes;
@@ -32,7 +32,7 @@ public class RelatorioController
     }
 
     @GetMapping("/rel/uso-ingrediente")
-    public List<ProdutoDto> produtosPorIngrediente(
+    public List<ProdutoDtoSemItens> produtosPorIngrediente(
         @RequestParam(required=true) String ingrediente)
     {
         return relatorioService.listarProdutosPorIngrediente(ingrediente);

@@ -4,5 +4,7 @@ public record IngredienteProdutoDto
 (
     //Long produtoId,
     Long ingredienteId,
-    Float qtd
+    String nome,
+    Float qtd,
+    String unDeMedida
 ) {}

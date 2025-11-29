@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mesmo.eu.relacionamento.dto.ProdutoDto;
+import mesmo.eu.relacionamento.dto.ProdutoDtoSemItens;
 import mesmo.eu.relacionamento.dto.relatorios.Exclusoes;
 import mesmo.eu.relacionamento.dto.relatorios.ReceitaPorCategoria;
 import mesmo.eu.relacionamento.dto.relatorios.UsoIngredientes;
@@ -32,11 +32,11 @@ public class RelatorioService
         return relatoriosRepository.receitaPorCategoria();
     }
 
-    public List<ProdutoDto> listarProdutosPorIngrediente(String ingrediente)
+    public List<ProdutoDtoSemItens> listarProdutosPorIngrediente(String ingrediente)
     {
         List<Produto> lista = relatoriosRepository.produtosPorIngrediente(ingrediente);
         return lista.stream()
-            .map(p -> produtoMapper.toDto(p)).toList();
+            .map(p -> produtoMapper.toDtoSemItens(p)).toList();
     }
 
     public List<Exclusoes> listarExcluoes()

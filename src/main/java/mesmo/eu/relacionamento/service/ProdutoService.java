@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import mesmo.eu.relacionamento.dto.IngredienteProdutoDto;
 import mesmo.eu.relacionamento.dto.ProdutoDto;
+import mesmo.eu.relacionamento.dto.ProdutoDtoSemItens;
 import mesmo.eu.relacionamento.entity.Ingrediente;
 import mesmo.eu.relacionamento.entity.IngredienteProduto;
 import mesmo.eu.relacionamento.entity.IngredienteProdutoId;
@@ -115,10 +116,10 @@ public class ProdutoService
         return produtoMapper.toDto(existente);
     }
 
-    public List<ProdutoDto> procurarTodos()
+    public List<ProdutoDtoSemItens> procurarTodos()
     {
         return produtoRepository.findAll().stream()
-            .map(p -> produtoMapper.toDto(p))
+            .map(p -> produtoMapper.toDtoSemItens(p))
             .toList();
     }
 

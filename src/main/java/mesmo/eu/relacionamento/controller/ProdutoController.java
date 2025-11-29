@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mesmo.eu.relacionamento.dto.IngredienteProdutoDto;
 import mesmo.eu.relacionamento.dto.ProdutoDto;
+import mesmo.eu.relacionamento.dto.ProdutoDtoSemItens;
 import mesmo.eu.relacionamento.service.ProdutoService;
 
 @RestController
@@ -42,7 +43,7 @@ public class ProdutoController
     }
 
     @GetMapping
-    public List<ProdutoDto> listarTodos()
+    public List<ProdutoDtoSemItens> listarTodos()
     {
         return produtoService.procurarTodos();
     }
